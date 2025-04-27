@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Это главная поляна</h1>
+    <p5>На ней расцветают даже самые нескромные мысли 🌼</p5>
+    {% for post in posts %}
+        <article class="post">
+            <h2><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <p>От {{ post.author.username }}  {{ post.date_posted.strftime('%Y-%m-%d') }}</p>
+            <p>{{ post.content[:200] }}...</p>
+        </article>
+    {% endfor %}
+{% endblock %}
