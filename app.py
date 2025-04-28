@@ -8,6 +8,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from datetime import datetime
+from email_validator import validate_email, EmailNotValidError
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'polinsjopa'
@@ -15,6 +16,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+
+try:
+    email = "admin@example.com"
+    validated_email = validate_email(email).email
+    print(f"Email корректен: {validated_email}")
+except EmailNotValidError as e:
+    print(f"Ошибка: {e}")
 
 # Настройка Flask-Login
 login_manager = LoginManager(app)

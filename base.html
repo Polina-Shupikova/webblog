@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shupigram</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="{{ url_for('index') }}">POLINARIA🌺🦩</a>
+            <div class="nav-links">
+                {% if current_user.is_authenticated %}
+    <a href="{{ url_for('profile') }}">Profile🌸</a>
+    <a href="{{ url_for('create_post') }}">New Post📝</a>
+    {% if current_user.is_admin %}
+        <a href="{{ url_for('admin_dashboard') }}">Admin👸</a>
+    {% endif %}
+    <a href="{{ url_for('logout') }}">Logout😞</a>
+{% else %}
+    <a href="{{ url_for('login') }}">Login🤩</a>
+    <a href="{{ url_for('register') }}">Signup💒</a>
+{% endif %}
+            </div>
+        </div>
+
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+<div class="flower-background"></div>
+    <div class="emoji-background"></div>
+<script>document.addEventListener('DOMContentLoaded', function() {
+  const background = document.querySelector('.flower-background');
+  const flowerCount = 12;
+  const flowerTypes = 5;
+
+  // Пастельные цвета для цветочков
+  const colors = [
+    '#FFD1DC', '#FFECF1', '#FFF5E6',
+    '#E1F7F5', '#D4F1F9', '#FFEEF8',
+    '#F0E6FF', '#E8F9E9', '#FFF0F5'
+  ];
+
+  // Создаем цветочки
+  for (let i = 0; i < flowerCount; i++) {
+    const flower = document.createElement('div');
+    flower.className = 'flower';
+
+    // Случайные параметры
+    const size = 20 + Math.random() * 30;
+    const duration = 15 + Math.random() * 20;
+    const delay = Math.random() * 15;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const left = Math.random() * 100;
+
+    // Создаем простой SVG цветочек
+    flower.innerHTML = `
+      <svg viewBox="0 0 100 100" width="${size}" height="${size}">
+        <circle cx="50" cy="50" r="30" fill="${color}"/>
+        <circle cx="30" cy="30" r="15" fill="white" opacity="0.8"/>
+        <circle cx="70" cy="30" r="15" fill="white" opacity="0.8"/>
+        <circle cx="30" cy="70" r="15" fill="white" opacity="0.8"/>
+        <circle cx="70" cy="70" r="15" fill="white" opacity="0.8"/>
+      </svg>
+    `;
+
+    flower.style.cssText = `
+      left: ${left}vw;
+      animation-duration: ${duration}s;
+      animation-delay: ${delay}s;
+    `;
+
+    background.appendChild(flower);
+  }
+});
+document.addEventListener('DOMContentLoaded', function() {
+  const bg = document.querySelector('.emoji-background');
+  const flowers = ['🌷', '🌺', '🌸'];
+  const count = 15;
+
+  for (let i = 0; i < count; i++) {
+    const flower = document.createElement('div');
+    flower.className = 'emoji-flower';
+    flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+
+    // Случайные параметры анимации
+    const size = 20 + Math.random() * 30;
+    const duration = 10 + Math.random() * 20;
+    const delay = Math.random() * 20;
+    const left = Math.random() * 100;
+    const rotation = Math.random() * 360;
+
+    flower.style.cssText = `
+      left: ${left}vw;
+      font-size: ${size}px;
+      animation-duration: ${duration}s;
+      animation-delay: ${delay}s;
+      transform: rotate(${rotation}deg);
+    `;
+
+    bg.appendChild(flower);
+  }
+});
+
+</script>
+</body>
+</html>
