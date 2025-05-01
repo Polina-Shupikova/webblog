@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Чаты</h2>
+<div class="user-list">
+    {% for user in users %}
+    <div class="user-card">
+    <div class="avatar-placeholder">{{ user.username[0] }}</div>
+    <a href="{{ url_for('chat', user_id=user.id) }}">{{ user.username }}</a>
+</div>
+    {% endfor %}
+</div>
+{% endblock %}

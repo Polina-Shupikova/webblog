@@ -229,3 +229,112 @@ button:hover {
   opacity: 0.2;
   z-index: -1;
 }
+
+
+    .container {
+        width: 100%;
+        padding: 0 15px;
+        box-sizing: border-box;
+    }
+
+    /* Меню для мобильных */
+    .pink-gear {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    /* Адаптация навигации */
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .nav-links.active {
+            display: flex;
+        }
+
+        .nav-links a {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+
+
+.chat-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.messages {
+    height: 500px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.message.sent {
+    background-color: #e3f2fd;
+    margin-left: auto;
+    border-bottom-right-radius: 0;
+}
+
+.message.received {
+    background-color: #f1f1f1;
+    margin-right: auto;
+    border-bottom-left-radius: 0;
+}
+
+.message small {
+    display: block;
+    text-align: right;
+    color: #777;
+    font-size: 0.8em;
+}
+
+.user-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.user-card img {
+    margin-right: 15px;
+}
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.message-header strong {
+    font-weight: 600;
+    color: #555;
+}
+
+.message-header small {
+    color: #777;
+    font-size: 0.8em;
+}
+
+.message-text {
+    margin: 0;
+    padding: 0;
+}

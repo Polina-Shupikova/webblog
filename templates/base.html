@@ -7,25 +7,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <nav>
-        <div class="container">
-            <a href="{{ url_for('index') }}">POLINARIA🌺🦩</a>
-            <div class="nav-links">
-                {% if current_user.is_authenticated %}
-    <a href="{{ url_for('profile') }}">Profile🌸</a>
-    <a href="{{ url_for('create_post') }}">New Post📝</a>
-    {% if current_user.is_admin %}
-        <a href="{{ url_for('admin_dashboard') }}">Admin👸</a>
-    {% endif %}
-    <a href="{{ url_for('logout') }}">Logout😞</a>
-{% else %}
-    <a href="{{ url_for('login') }}">Login🤩</a>
-    <a href="{{ url_for('register') }}">Signup💒</a>
-{% endif %}
-            </div>
+<nav>
+    <div class="container">
+        <a href="{{ url_for('index') }}" class="logo">POLINARIA🌺🦩</a>
+        <button class="menu-toggle">⚙️</button>
+        <div class="nav-links">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('profile') }}">Profile🌸</a>
+                <a href="{{ url_for('create_post') }}">New Post📝</a>
+                <a href="{{ url_for('chats') }}">Chats🗯️</a>
+                {% if current_user.is_admin %}
+                    <a href="{{ url_for('admin_dashboard') }}">Admin👸</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}">Logout😞</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login🤩</a>
+                <a href="{{ url_for('register') }}">Signup💒</a>
+            {% endif %}
         </div>
-
-    </nav>
+    </div>
+</nav>
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -40,79 +41,124 @@
     </div>
 <div class="flower-background"></div>
     <div class="emoji-background"></div>
-<script>document.addEventListener('DOMContentLoaded', function() {
-  const background = document.querySelector('.flower-background');
-  const flowerCount = 12;
-  const flowerTypes = 5;
+<script>
+    // Адаптивное меню
+document.querySelector('.menu-toggle').addEventListener('click', function() {
+    document.querySelector('.nav-links').classList.toggle('active');
+});
 
-  // Пастельные цвета для цветочков
-  const colors = [
-    '#FFD1DC', '#FFECF1', '#FFF5E6',
-    '#E1F7F5', '#D4F1F9', '#FFEEF8',
-    '#F0E6FF', '#E8F9E9', '#FFF0F5'
-  ];
-
-  // Создаем цветочки
-  for (let i = 0; i < flowerCount; i++) {
-    const flower = document.createElement('div');
-    flower.className = 'flower';
-
-    // Случайные параметры
-    const size = 20 + Math.random() * 30;
-    const duration = 15 + Math.random() * 20;
-    const delay = Math.random() * 15;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const left = Math.random() * 100;
-
-    // Создаем простой SVG цветочек
-    flower.innerHTML = `
-      <svg viewBox="0 0 100 100" width="${size}" height="${size}">
-        <circle cx="50" cy="50" r="30" fill="${color}"/>
-        <circle cx="30" cy="30" r="15" fill="white" opacity="0.8"/>
-        <circle cx="70" cy="30" r="15" fill="white" opacity="0.8"/>
-        <circle cx="30" cy="70" r="15" fill="white" opacity="0.8"/>
-        <circle cx="70" cy="70" r="15" fill="white" opacity="0.8"/>
-      </svg>
-    `;
-
-    flower.style.cssText = `
-      left: ${left}vw;
-      animation-duration: ${duration}s;
-      animation-delay: ${delay}s;
-    `;
-
-    background.appendChild(flower);
-  }
+// Закрытие меню при клике на ссылку
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.remove('active');
+    });
 });
 document.addEventListener('DOMContentLoaded', function() {
-  const bg = document.querySelector('.emoji-background');
-  const flowers = ['🌷', '🌺', '🌸'];
-  const count = 15;
+    const flowers = ['🌷', '🌺', '🌸'];
+    const container = document.querySelector('.emoji-background');
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-  for (let i = 0; i < count; i++) {
-    const flower = document.createElement('div');
-    flower.className = 'emoji-flower';
-    flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+    // Настройки анимации
+    const settings = {
+        minSize: isMobile ? 20 : 15,
+        maxSize: isMobile ? 40 : 30,
+        minDuration: isMobile ? 10 : 15,
+        maxDuration: isMobile ? 20 : 25,
+        flowersCount: isMobile ? 10 : 20,
+        spawnInterval: isMobile ? 2000 : 1000
+    };
 
-    // Случайные параметры анимации
-    const size = 20 + Math.random() * 30;
-    const duration = 10 + Math.random() * 20;
-    const delay = Math.random() * 20;
-    const left = Math.random() * 100;
-    const rotation = Math.random() * 360;
+    // Создаем цветочек
+    function createFlower() {
+        const flower = document.createElement('div');
+        flower.className = 'emoji-flower';
 
-    flower.style.cssText = `
-      left: ${left}vw;
-      font-size: ${size}px;
-      animation-duration: ${duration}s;
-      animation-delay: ${delay}s;
-      transform: rotate(${rotation}deg);
+        // Выбираем случайный цветочек
+        flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+
+        // Случайный размер
+        const size = Math.random() * (settings.maxSize - settings.minSize) + settings.minSize;
+
+        // Случайная позиция по горизонтали
+        const left = Math.random() * 100;
+
+        // Случайная длительность анимации
+        const duration = Math.random() * (settings.maxDuration - settings.minDuration) + settings.minDuration;
+
+        // Случайный начальный поворот
+        const rotation = Math.random() * 360;
+
+        // Применяем стили
+        flower.style.cssText = `
+            left: ${left}vw;
+            font-size: ${size}px;
+            animation-duration: ${duration}s;
+            transform: rotate(${rotation}deg);
+            z-index: 1;
+        `;
+
+        // Добавляем на страницу
+        container.appendChild(flower);
+
+        // Удаляем цветочек после завершения анимации
+        setTimeout(() => {
+            flower.remove();
+        }, duration * 1000);
+    }
+
+    // Создаем начальные цветочки
+    for (let i = 0; i < settings.flowersCount; i++) {
+        setTimeout(createFlower, Math.random() * 3000);
+    }
+
+    // Запускаем интервал для создания новых цветочков
+    setInterval(createFlower, settings.spawnInterval);
+
+    // Добавляем стили для анимации
+    const style = document.createElement('style');
+    style.textContent = `
+        .emoji-flower {
+            position: fixed;
+            bottom: -50px;
+            animation-name: float-up;
+            animation-timing-function: linear;
+            animation-iteration-count: 1;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(0) rotate(${Math.random() * 360}deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(-100vh - 100px)) rotate(${Math.random() * 360}deg);
+                opacity: 0;
+            }
+        }
+
+        /* Для мобильных - более медленная анимация */
+        @media (max-width: 768px) {
+            .emoji-flower {
+                animation-name: float-up-mobile;
+            }
+
+            @keyframes float-up-mobile {
+                0% {
+                    transform: translateY(0) rotate(${Math.random() * 360}deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(calc(-100vh - 50px)) rotate(${Math.random() * 360}deg);
+                    opacity: 0;
+                }
+            }
+        }
     `;
-
-    bg.appendChild(flower);
-  }
+    document.head.appendChild(style);
 });
-
 </script>
+
 </body>
 </html>

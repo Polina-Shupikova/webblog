@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="chat-container">
+    <h2>Чат с {{ recipient.username }}</h2>
+    
+    <div class="messages">
+    {% for message in messages %}
+    <div class="message {% if message.sender_id == current_user.id %}sent{% else %}received{% endif %}">
+        <div class="message-header">
+            {% if message.sender_id != current_user.id %}
+            <strong>{{ message.sender.username }}</strong>
+            {% else %}
+            <strong>Вы</strong>
+            {% endif %}
+            <small>{{ message.sent_at.strftime('%H:%M') }}</small>
+        </div>
+        <p class="message-text">{{ message.text }}</p>
+    </div>
+    {% endfor %}
+</div>
+    
+    <form method="POST" class="message-form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.text(class="form-control", placeholder="Напишите сообщение...") }}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+</div>
+{% endblock %}
